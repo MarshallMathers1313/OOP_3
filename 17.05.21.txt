@@ -1,0 +1,149 @@
+#include <iostream>
+using namespace std;
+int main()
+{
+	//копирующая инициализация
+	int a = 5;
+	
+	//прямая инициализация
+	int b(5);
+
+
+	//uniform-инициализация
+	int c{ 5 };
+}
+
+============================================
+#include <iostream>
+using namespace std;
+
+inline int max(int a, int b)
+{
+	return a > b ? a : b;
+}
+
+int main()
+{
+	cout << max(7, 8) << endl;
+	cout << max(5, 4) << endl;
+	return 0;
+}
+
+
+===============================
+Student.h
+#pragma once
+#include <iostream>
+using namespace std;
+//определение класса
+class Student
+{
+private:
+	//ФИО
+	char *name;
+	//дата рождения
+	char date_birthday[11];
+	//номер телефона
+	char number[13];
+	//возраст
+	int age;
+
+
+public:
+	//конструктор
+	//конструктор имеет в точности то же имя, что и класс
+	//конструктор не возвращает значений
+	//перед именем конструктора не указывется тип возврата
+	Student(const char* studentName, const char* studentDate,
+		const char* studentNumber, int studentAge)
+	{
+		cout << "Коструктор Student" <<this<< endl;
+		setName(studentName);
+		setDate(studentDate);
+		setNumber(studentNumber);
+		setAge(studentAge);
+	}
+
+	//для ФИО
+	void setName(const char* studentName)
+	{
+		if (studentName)
+		{
+			name = new char[21];
+			strcpy_s(name, 20, studentName);
+		}
+		else
+			name = nullptr;
+		
+	}
+	const char* getName() 
+	{
+		return name;
+	}
+
+	//для дата рождения
+	void setDate(const char* studentDate)
+	{
+		strcpy_s(date_birthday, 11, studentDate);
+	}
+	const char* getDate()
+	{
+		return date_birthday;
+	}
+
+	//для номер телефона
+	void setNumber(const char* studentNumber)
+	{
+		strcpy_s(number, 12, studentNumber);
+	}
+	const char* getNumber()
+	{
+		return number;
+	}
+
+	//для возраста
+	void setAge(int studentAge)
+	{
+		age = studentAge;
+	}
+	int getAge()
+	{
+		return age;
+	}
+
+	//вывод информацию о студенте
+	void printInformation();
+
+	~Student()
+	{
+		cout << "Destructor " << this << endl;
+		delete[] name;
+	}
+};
+
+Student.cpp
+#include <iostream>
+#include "Student.h"
+using namespace std;
+
+void Student::printInformation()
+{
+	cout << "Name: " << name << endl;
+	cout << "Date birthday: " << date_birthday << endl;
+	cout << "Number: " << number << endl;
+	cout << "Age: " << age << endl;
+}
+
+StudentGrades.cpp
+#include <iostream>
+#include "Student.h"
+using namespace std;
+int main()
+{
+	setlocale(LC_ALL, "Russian");
+	
+	//создаем объект от класса Student
+	Student student("Иванов А. И", "13.11.1995","xxx- xx-xx", 26);
+	student.printInformation();
+	return 0;
+}
